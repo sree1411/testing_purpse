@@ -6,6 +6,7 @@ function App() {
 
   const [users, setUsers] = useState([]);
   const [newUser, setNewUser] = useState('')
+  const [editIndex, setEditIndex] = useState(null)
 
 
   const handleChange =(e)=>{
@@ -13,7 +14,19 @@ function App() {
   }
 
   const addDetails = ()=>{
-    setUsers([...users, {name:newUser, status:false}]);
+ 
+    if(editIndex === null){
+      setUsers([...users, {name:newUser, status:false}]);
+    }else{
+        const updatedUsers = users.map((user,index)=>
+          index === editIndex ? {...user, name:newUser} :user
+        )
+        setUsers(updatedUsers);
+        setEditIndex(null)
+
+    }
+
+    
     setNewUser('')
   }
 
@@ -23,10 +36,10 @@ function App() {
        setUsers(temp)
   }
 
-  const deletBtn =(i)=>{
-    var temp= [...users]
-    temp.splice(i,1);
-    setUsers(temp)
+  const editBtn =(i)=>{
+  
+    setNewUser(users[i].name);
+    setEditIndex(i)
 }
 
   return (
@@ -35,14 +48,14 @@ function App() {
       <h1> Sample to the application </h1> 
 
        <input type='text' value={newUser} onChange={handleChange}  />
-       <button onClick={addDetails} > Add details </button>
+       <button onClick={addDetails} > {editIndex === null ? "add": "update"} </button>
 
       {
         users.map((user,i)=>(
             <p className={user.status ? "mark":"unmark"} > 
               {user.name}
               <button onClick={()=>changStatus(i)} > {user.status ? "Undone":"Done"} </button>
-              <button onClick={()=>deletBtn(i)} > delete </button>
+              <button onClick={()=>editBtn(i)} > Edit </button>
             </p>
         ))
       }
