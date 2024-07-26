@@ -23,6 +23,11 @@ function App() {
        setUsers(temp)
   }
 
+  const deletBtn =(i)=>{
+    var temp= [...users]
+    temp.splice(i,1);
+    setUsers(temp)
+}
 
   return (
     <div>
@@ -37,6 +42,7 @@ function App() {
             <p className={user.status ? "mark":"unmark"} > 
               {user.name}
               <button onClick={()=>changStatus(i)} > {user.status ? "Undone":"Done"} </button>
+              <button onClick={()=>deletBtn(i)} > delete </button>
             </p>
         ))
       }
