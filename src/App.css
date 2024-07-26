@@ -1,5 +1,10 @@
 .App{
   color:red;
   text-align: center;
+  background-color: red;
   
+}
+
+td img{
+  width: 50px;
 }
