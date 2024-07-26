@@ -1,5 +1,12 @@
 import React, { useCallback, useState } from 'react'
 
+function CounterComponent({onClick,label}){
+    console.log(`${label}`)
+   return <button onClick={onClick} > {label}  </button>
+}
+
+
+const MemorizedComponent = React.memo(CounterComponent)
 
 function App() {
 
@@ -24,9 +31,9 @@ const resetBtn = useCallback(()=>{
 
       <h1> usecall back example </h1> 
       <p>  {count}</p>
-       <button onClick={incBtn} >inc </button>
-       <button onClick={decBtn} >dec </button>
-       <button onClick={resetBtn} >reset </button>
+       <MemorizedComponent onClick={incBtn} label="increment"   /> 
+       <MemorizedComponent onClick={decBtn} label="decrement"   /> 
+       <MemorizedComponent onClick={resetBtn} label="reset"   /> 
        
     </div>
   )
