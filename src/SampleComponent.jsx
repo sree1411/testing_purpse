@@ -3,13 +3,23 @@ import { UserData} from './UserContext'
 
 const SampleComponent = () => {
 
-    const {count,incBtn} =  UserData()
+    const { toggleTheme, theme} =  UserData()
+
+     const style ={
+        backgroundColor :theme === "light" ? "black" :"white",
+        minHeight:"50vh"
+     }
+
 
 
   return (
       <>
-       <div>count :{count}</div>
-       <button  onClick={incBtn}  > inc</button>
+       <div style={style}>
+        
+        theme :{theme} 
+    
+       <button  onClick={toggleTheme}  > {theme === "light" ? "white" :"black"}</button>
+       </div>
       </>
   )
 }
