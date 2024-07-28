@@ -1,14 +1,18 @@
-import React from 'react'
-
+import React from 'react';
 
 function App() {
-  return (
-    <div>
+  const handleClick = (event) => {
+    console.log('Button clicked');
+    console.log('Event type:', event.type);
+    console.log('Event target:', event.target);
+  };
 
-      <h1> Sample to the applications </h1> 
-       
+  return (
+    <div className="App">
+      <h1>React Synthetic Event Example</h1>
+      <button onClick={handleClick}>Click Me</button>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
