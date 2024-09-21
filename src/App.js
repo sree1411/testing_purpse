@@ -1,67 +1,85 @@
-import React, { useState } from 'react'
-import {marks} from './marks'
+import React, { useState } from 'react';
 
 function App() {
-  const [allquestions, setAllQuestions] = useState([...marks]);
+  const [users, setUsers] = useState([]);
+  const [taskvalue, setTaskValue] = useState({ id: null, name: '' }); // Combined state
 
-    function calPerc(question){
-     return Object.values(question["marks_obtained"]).reduce((a,b)=>a+b, 0)/5
+  const handleChange = (e) => {
+    setTaskValue({ ...taskvalue, name: e.target.value }); // Update only the name
+  };
+
+  const handleReset = () => {
+    setTaskValue({ id: null, name: '' }); // Reset both name and id
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (taskvalue.id) {
+      // Edit the existing task
+      setUsers(
+        users.map((task) =>
+          task.id === taskvalue.id ? { ...task, name: taskvalue.name } : task
+        )
+      );
+    } else {
+      // Add a new task
+      const newTask = {
+        id: Math.floor(Math.random() * 10000),
+        name: taskvalue.name,
+        status: false, // Initialize the status as false
+      };
+      setUsers([...users, newTask]);
     }
 
+    handleReset(); // Reset input after adding or editing
+  };
 
-    function getClassName(question){
-      var p = calPerc(question);
-      if(p>=80){
-        return "table-warning"
-      }
-      if(p>=70&& p<=79){
-        return "table-info"
-      }
+  const deleteBtn = (id) => {
+    setUsers(users.filter((task) => task.id !== id));
+  };
+
+  const editUserBtn = (id) => {
+    const userToEdit = users.find((task) => task.id === id);
+    if (userToEdit) {
+      setTaskValue({ id: userToEdit.id, name: userToEdit.name }); // Set the task to edit
     }
-  
-   
+  };
+
+  const toggleBtn = (id) => {
+    setUsers(
+      users.map((task) =>
+        task.id === id ? { ...task, status: !task.status } : task
+      )
+    );
+  };
 
   return (
-    <div>
-
-      <h1> Sample to the applications </h1> 
-        <table className='table border-2'>
-           <thead>
-             <tr>
-               <th>  student Name </th>
-               <th>  Maths </th>
-
-               <th>  English </th>
-               <th>  Science </th>
-               <th>  Geography </th>
-               <th>  History </th>
-               <th>  percentage </th>
-
-
-             </tr>
-           </thead>
-          <tbody>
-            {
-              allquestions.map((question)=>(
-                    <tr className={getClassName(question)}>
-                      <td> {question.name} </td>
-                      <td> {question["marks_obtained"].Math} </td>
-                      <td> {question["marks_obtained"].English} </td>
-                      <td> {question["marks_obtained"].Science} </td>
-                      <td> {question["marks_obtained"].Geography} </td>
-                      <td> {question["marks_obtained"].History} </td>
-                      <td>
-                          {calPerc(question)}
-                      </td>
- 
-                    </tr>
-              ))
-            }
-          </tbody>
-        </table>
-       
-    </div>
-  )
+    <>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="task"
+          value={taskvalue.name}
+          onChange={handleChange}
+        />
+        <button type="submit">
+          {taskvalue.id ? 'Update' : 'Add'} {/* Dynamic button label */}
+        </button>
+      </form>
+      <ul>
+        {users.map((user) => (
+          <li key={user.id}>
+            {user.id} - {user.name} - {user.status ? 'pending' : 'completed'}
+            <button onClick={() => deleteBtn(user.id)}>Delete</button>
+            <button onClick={() => editUserBtn(user.id)}>Edit</button>
+            <button onClick={() => toggleBtn(user.id)}>
+              {user.status ? 'Undo' : 'Done'}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </>
+  );
 }
 
-export default App
+export default App;
