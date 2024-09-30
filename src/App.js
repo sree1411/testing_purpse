@@ -5,7 +5,7 @@ function App() {
   return (
     <div>
 
-      <h1> welcome to the application </h1> 
+      <h1> welcome to the applications </h1> 
        
     </div>
   )
